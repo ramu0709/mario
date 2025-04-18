@@ -44,21 +44,27 @@ pipeline {
             }
         }
 
-        stage('🚀 Run Docker Container on Port 9073') {
+        stage('🚀 Run Docker Container on Port 9075') {
             steps {
                 script {
                     sh 'docker stop application-23 || true'
                     sh 'docker rm application-23 || true'
-                    sh "docker run -d --name application-23 -p 9073:8080 ${DOCKER_HUB_USER}/${IMAGE_NAME}:23"
+                    sh "docker run -d --name application-23 -p 9075:8080 ${DOCKER_HUB_USER}/${IMAGE_NAME}:23"
                 }
             }
         }
     }
 
-    post {
-        always {
-            cleanWs()
-            echo "❌ Something went wrong!" // Will show even on success but can be adjusted
-        }
+post {
+    success {
+        echo "✅ Deployment successful!"
+    }
+    failure {
+        echo "❌ Something went wrong!"
+    }
+    always {
+        cleanWs()
+    }
+}
     }
 }
