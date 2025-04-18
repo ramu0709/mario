@@ -25,8 +25,8 @@ pipeline {
         stage('🐳 Build Docker Image') {
             steps {
                 script {
-                    // Rename WAR file to ROOT.war for Tomcat
-                    sh 'cp target/mario-game-1.0-SNAPSHOT.war target/ROOT.war'
+                    // Rename WAR file to ROOT.war for Tomcat with existence check
+                    sh 'if [ -f target/mario-game-1.0-SNAPSHOT.war ]; then cp target/mario-game-1.0-SNAPSHOT.war target/ROOT.war; else echo "WAR file not found!"; exit 1; fi'
 
                     // Build Docker image with build number
                     docker.build("${DOCKER_HUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER}")
