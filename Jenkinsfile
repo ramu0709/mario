@@ -5,7 +5,7 @@ pipeline {
         MAVEN_HOME = tool name: "Maven 3.9.9"
         DOCKER_HUB_USER = "ramu7"
         IMAGE_NAME = "application"
-        WAR_NAME = "mario-game-1.0-SNAPSHOT"
+        WAR_NAME = "ROOT" // Changed this to ROOT to match the generated WAR file
         WAR_FILE = "target/${WAR_NAME}.war"
     }
 
@@ -26,7 +26,7 @@ pipeline {
             steps {
                 script {
                     // Rename WAR file to ROOT.war for Tomcat with existence check
-                    sh 'if [ -f target/mario-game-1.0-SNAPSHOT.war ]; then cp target/mario-game-1.0-SNAPSHOT.war target/ROOT.war; else echo "WAR file not found!"; exit 1; fi'
+                    sh 'if [ -f target/ROOT.war ]; then cp target/ROOT.war target/ROOT.war; else echo "WAR file not found!"; exit 1; fi'
 
                     // Build Docker image with build number
                     docker.build("${DOCKER_HUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER}")
