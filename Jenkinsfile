@@ -28,8 +28,8 @@ pipeline {
         stage('🐳 Build Docker Image') {
             steps {
                 script {
-                    // Renaming WAR file to ROOT.war
-                    sh 'cp target/ROOT.war target/ROOT.war'
+                    // Check if the ROOT.war exists and copy it if necessary
+                    sh 'if [ ! -f target/ROOT.war ]; then cp target/${WAR_NAME}.war target/ROOT.war; fi'
                     
                     // Build Docker Image with Build Number
                     def imageName = "${DOCKER_HUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER}"
@@ -43,7 +43,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
                     script {
                         sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
-                        sh "docker push ${DOCKER_HUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER}"
+                        def imageName = "${DOCKER_HUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER}"
+                        sh "docker push ${imageName}"
                     }
                 }
             }
@@ -52,9 +53,10 @@ pipeline {
         stage('🚀 Run Docker Container on Port 9075') {
             steps {
                 script {
+                    def imageName = "${DOCKER_HUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER}"
                     sh 'docker stop application-${BUILD_NUMBER} || true'
                     sh 'docker rm application-${BUILD_NUMBER} || true'
-                    sh "docker run -d --name application-${BUILD_NUMBER} -p 9075:8080 ${DOCKER_HUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER}"
+                    sh "docker run -d --name application-${BUILD_NUMBER} -p 9075:8080 ${imageName}"
                 }
             }
         }
