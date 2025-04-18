@@ -1,9 +1,10 @@
 FROM tomcat:9.0
 
+# Remove default apps
 RUN rm -rf /usr/local/tomcat/webapps/*
 
-COPY target/mario-game.war /usr/local/tomcat/webapps/ROOT.war
+# Copy your WAR file
+COPY target/mario-game-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
 
+# Expose Tomcat's default port and your custom port
 EXPOSE 8080 9073
-
-CMD ["catalina.sh", "run"]
