@@ -1,17 +1,10 @@
-# Use the official Tomcat base image
-FROM tomcat:9.0.104-jdk17
+# Use the official Tomcat image as the base image
+FROM tomcat:9-jdk11-openjdk
 
-# Set environment variables for Tomcat
-ENV CATALINA_HOME /usr/local/tomcat
-ENV CATALINA_BASE /usr/local/tomcat
+# Copy the ROOT.war file to the correct location in the Tomcat container
+COPY target/ROOT.war /opt/tomcat/webapps/ROOT.war
 
-# Remove the default web apps
-RUN rm -rf /usr/local/tomcat/webapps/*
-
-# Copy the WAR file into the container and rename it to ROOT.war
-COPY target/ROOT.war /usr/local/tomcat/webapps/
-
-# Expose Tomcat port
+# Expose the port that Tomcat will run on
 EXPOSE 8080
 
 # Start Tomcat
