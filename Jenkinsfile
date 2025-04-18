@@ -28,6 +28,8 @@ pipeline {
         stage('🐳 Build Docker Image') {
             steps {
                 script {
+                    // Renaming WAR file to ROOT.war
+                    sh "cp ${WAR_FILE} target/ROOT.war"
                     docker.build("${DOCKER_HUB_USER}/${IMAGE_NAME}:23")
                 }
             }
