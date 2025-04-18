@@ -12,13 +12,16 @@
     <name>Mario Game Web App</name>
 
     <build>
-        <finalName>mario-game-1.0-SNAPSHOT</finalName>
+        <!-- Set final WAR name to ROOT -->
+        <finalName>ROOT</finalName>
+        
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.3.1</version>
                 <configuration>
+                    <!-- Ensure no web.xml is required -->
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
