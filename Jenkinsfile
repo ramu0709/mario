@@ -55,17 +55,15 @@ pipeline {
         }
     }
 
-post {
-    success {
-        echo "✅ Deployment successful!"
+    post {
+        success {
+            echo "✅ Deployment successful!"
+        }
+        failure {
+            echo "❌ Something went wrong!"
+        }
+        always {
+            cleanWs()
+        }
     }
-    failure {
-        echo "❌ Something went wrong!"
-    }
-    always {
-        cleanWs()
-    }
-}
-    }
-}
 }
