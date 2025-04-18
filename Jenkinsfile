@@ -5,7 +5,6 @@ pipeline {
         MAVEN_HOME = tool name: "Maven 3.9.9"
         DOCKER_HUB_USER = "ramu7"
         IMAGE_NAME = "application"
-        BUILD_NUMBER = env.BUILD_NUMBER  // Jenkins build number
         WAR_NAME = "mario-game-1.0-SNAPSHOT"
         WAR_FILE = "target/${WAR_NAME}.war"
     }
